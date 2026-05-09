@@ -12,4 +12,4 @@ RUN dotnet publish  "OleleLibraryNowAPI.csproj" -c Release -o /app/out
 FROM base AS final
 WORKDIR /app
 COPY --from=build /app/out .
-ENTRYPOINT ["dotnet", "OleleLibraryNowAPI.dll"]S
+ENTRYPOINT ["dotnet", "OleleLibraryNowAPI.dll"]

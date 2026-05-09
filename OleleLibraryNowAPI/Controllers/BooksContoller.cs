@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.AspNetCore.Mvc;
 using OleleLibraryNowAPI.Models;
@@ -44,7 +44,7 @@ namespace OleleLibraryNowAPI.Controllers
                 message = "books retrieved"
             });
         } 
-        [HttpGet("[id]")]
+        [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
             var book = books.FirstOrDefault(x => x.Id == id);
@@ -65,16 +65,16 @@ namespace OleleLibraryNowAPI.Controllers
                 message = "book retrieved"
             });
         }
-        [HttpPut("[id]")]
+
+        [HttpPost]
         public IActionResult Create([FromBody] Book newBook)
         {
             newBook.Id = books.Count + 1;
             books.Add(newBook);
-
             return CreatedAtAction(nameof(GetById),
                 new 
                 {
-                    Id = newBook.Id
+                    id = newBook.Id
                 },
                 new
                 {
@@ -83,7 +83,7 @@ namespace OleleLibraryNowAPI.Controllers
                     message = "Book created. "
                 });
         }
-
+        [HttpPut ("{id}")]
         public IActionResult Update(int id,
             [FromBody] Book updateBook)
         {
@@ -102,6 +102,7 @@ namespace OleleLibraryNowAPI.Controllers
             book.Available = updateBook.Available;
             book.PublishedYear = updateBook.PublishedYear;
 
+            books.Remove(book);
             return Ok(new
             {
                 status = "success",
@@ -110,7 +111,7 @@ namespace OleleLibraryNowAPI.Controllers
             });
         }
 
-        [HttpDelete("[id]")]
+        [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
             {
